@@ -1,23 +1,70 @@
 library(shiny)
-shinyUI(fluidPage(
-    titlePanel("Text Prediction App"),
-    fluidRow("Note: When the page loads, please give 10-15 seconds for the app to load in the background."),
-    hr(),
-    fluidRow("In the space below:"),
-    fluidRow("1. Type a sentence"),
-    fluidRow("2. Press Submit"), 
-    fluidRow("Wait a few seconds... and then you will see a few words that are likely to come next!"),
-    hr(),
-    textInput('sentenceInputVar', 'Type here:'),
-    actionButton('submitButton', 'Submit'),
-    fluidRow('(Example: "I want to go" or "She used to")'),
-    verbatimTextOutput("oWordPredictions"),
+
+fluidPage (theme = "bootstrap.css", 
+        
+  
+headerPanel(tags$head(h4(strong("Knowledge Search and Similarity Scoring System"),align = "center" )), tags$head(tags$img(src="image.png",align = "right", height = "85px"))),
+  br(),br(),
+  
+  sidebarLayout(
     
-    hr(),
+    sidebarPanel( 
+      radioButtons("sel","Select action", selected ="file1",
+                   c("File Upload" = "file1","Insert Keywords" = "selection")),
+                     
+      
+       fileInput("file1", 'Upload File',accept=c('text/csv','text/comma-separated-values,text/plain')), 
+      
+      textInput("selection", h5(strong("Insert Keywords:")),
+                  value = words),
+     actionButton("update1", "Submit",  class="btn btn-info"),
+     
+      actionButton("update", "Generate",  class="btn btn-info"),
+    br(), br(),
+    dateInput("date1",label = "From", Sys.Date()),
+    dateInput("date2",label = "To", Sys.Date()),
+    br(),
     
-    fluidRow("This app uses a very simplified version of the Kneser-Ney smoothing algorithm."),
-    fluidRow("For more information, contact the creator of this app."),
-    hr(),
-    fluidRow("This app was created by Polong Lin. polong [dot] lin [at] gmail [dot] com.")
+    fluidRow( 
+            column(3,
+      checkboxGroupInput("check", 
+                         label = h5(strong("Word List")), 
+                         choices = cho,
+                         selected = "")),
+      column(9,
+             actionButton("update2", "Add",  class="btn btn-info", align = "right")))),
+ 
+       
+    mainPanel(
+      
+      tabsetPanel(id = 1,
+                  tabPanel(h5(strong("Text Input")), tableOutput("data1"))
+                  ),
+      
+                  br(),
+      
+                  #hr(),
+            #hr(), hr(), hr(), 
+        #tabsetPanel(id = 2,
+                  #tabPanel(h5(strong("Output text")), textOutput("data"))),
+      
+        #actionButton("update3", "Add to Checkbox",  class="btn btn-info"),
+           br(), br(),
+      tabsetPanel(id = 3,
+                  tabPanel(h5(strong("Key words")), textOutput("data2"))),
+     # downloadButton('downloadData', 'Download', class="btn btn-info"),
+      actionButton("sear", "Search",  class="btn btn-info")
+      )
+    )
 )
-)
+  
+
+    
+   
+  
+
+
+
+  
+
+ 
